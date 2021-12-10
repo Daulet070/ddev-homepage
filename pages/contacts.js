@@ -1,95 +1,76 @@
+import Script from 'next/script'
 import {
+  Container,
   Box,
-  Stack,
   Heading,
   Text,
-  Container,
+  Button,
   Input,
-  Button
+  Stack,
+  SimpleGrid,
+  useColorModeValue
 } from '@chakra-ui/react'
+import { EmailIcon, ViewIcon } from '@chakra-ui/icons'
+import { YMaps, Map } from 'react-yandex-maps'
 import Section from '../components/Section'
 
 const Contacts = () => {
   return (
-    <Section>
-      <Container maxW="container.md">
-        <Stack
-          bg={'gray.50'}
-          rounded={'xl'}
-          p={{ base: 4, sm: 6, md: 8 }}
-          spacing={{ base: 8 }}
-          maxW={{ lg: 'lg' }}
+    <Section duration={0.1}>
+      <Container maxW="container.md" centerContent overflow="hidden">
+        <SimpleGrid
+          bg={useColorModeValue('#ffffffed', '#373772ad')}
+          style={{ backdropFilter: 'blur(10px)' }}
+          columns={[1, 2]}
+          p={5}
+          gridGap={4}
         >
-          <Stack spacing={4}>
-            <Heading
-              color={'gray.800'}
-              lineHeight={1.1}
-              fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
-            >
-              Join our team
-              <Text
-                as={'span'}
-                bgGradient="linear(to-r, red.400,pink.400)"
-                bgClip="text"
-              >
-                !
-              </Text>
+          <Box w={'100%'}>
+            <Heading mb={5} as='h2'>
+              Contact
             </Heading>
-            <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
-              We’re looking for amazing engineers just like you! Become a part of
-              our rockstar engineering team and skyrocket your career!
-            </Text>
-          </Stack>
-          <Box as={'form'} mt={10}>
-            <Stack spacing={4}>
-              <Input
-                placeholder="Firstname"
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500'
-                }}
-              />
-              <Input
-                placeholder="firstname@lastname.io"
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500'
-                }}
-              />
-              <Input
-                placeholder="+1 (___) __-___-___"
-                bg={'gray.100'}
-                border={0}
-                color={'gray.500'}
-                _placeholder={{
-                  color: 'gray.500'
-                }}
-              />
-              <Button fontFamily={'heading'} bg={'gray.200'} color={'gray.800'}>
-                Upload CV
-              </Button>
+            <Stack direction={'column'} spacing={5}>
+              <Text>
+                Fill up the form to contact
+              </Text>
+              <Text>
+                <EmailIcon />  anakhaev_web@vk.com
+              </Text>
+              <Text>
+                <ViewIcon />  Nalhcik, Russia
+              </Text>
             </Stack>
-            <Button
-              fontFamily={'heading'}
-              mt={8}
-              w={'full'}
-              bgGradient="linear(to-r, red.400,pink.400)"
-              color={'white'}
-              _hover={{
-                bgGradient: 'linear(to-r, red.400,pink.400)',
-                boxShadow: 'xl'
-              }}
-            >
-              Submit
-            </Button>
           </Box>
-          form
-        </Stack>
+          <Box>
+            <Box as='form'  w={'100%'} >
+              <SimpleGrid columns={1} gridGap={4}>
+                <Box as='label' w={'100%'}>
+                  <Text as='span'>Name</Text>
+                  <Input type={'text'} name='name' placeholder='John' />
+                </Box>
+                <Box as='label' w={'100%'}>
+                  <Text as='span'>Email</Text>
+                  <Input type={'email'} name='email' placeholder='examlple@mail.ru' />
+                </Box>
+                <Box as='label' w={'100%'}>
+                  <Text as='span'>Phone</Text>
+                  <Input type={'tel'} name='phone' placeholder='+7...' />
+                </Box>
+                <Box display={'flex'} justifyContent={'center'}>
+                  <Button type='submit' bgColor={'teal'}>Submit</Button>
+                </Box>
+              </SimpleGrid>
+            </Box>
+          </Box>
+        </SimpleGrid>
+        <YMaps>
+          <div>
+            My awesome application with maps!
+            <Map width={'600px'} height={'300px'} defaultState={{ center: [43.495311, 43.597522], zoom: 18 }} />
+          </div>
+        </YMaps>
       </Container>
+      <Script src='custom/js/phoneMask.js' />
     </Section>
   )
 }

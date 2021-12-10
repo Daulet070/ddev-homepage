@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
+import Link from 'next/link'
 import matter from 'gray-matter'
 import { marked } from 'marked'
-import Link from 'next/link'
-import Section from '../../components/Section'
-import { Heading } from '@chakra-ui/layout'
+import { Heading, Container } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/image'
+import Section from '../../components/Section'
 
 const PostPage = ({ 
     frontmatter: { title, date, cover_image }, 
@@ -13,7 +13,7 @@ const PostPage = ({
     content 
 }) => {
     return (
-        <>
+        <Container>
             <Link href='/posts'>
                 <a>Go back</a>
             </Link>
@@ -27,7 +27,7 @@ const PostPage = ({
                     <div dangerouslySetInnerHTML={{__html: marked(content)}}></div>
                 </div>
             </Section>
-        </>
+        </Container>
     );
 }
 
