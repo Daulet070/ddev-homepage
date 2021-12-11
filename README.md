@@ -13,13 +13,16 @@ $PROJECT_ROOT
 │   # Page files
 ├── pages
 |   # Blog markdown files
-├── blog 
+├── posts 
 │   # React component files
 ├── components
 │   # Non-react modules
 ├── lib
-│   # Static files for images and 3d model file
+│   # Non-react modules
+├── utils
+│   # Static files for images and js file
 └── public
 ```
-
+Life Demo deploy with Vercel
+https://ddev-homepage-rkic10r00-daulet070.vercel.app/
 ---

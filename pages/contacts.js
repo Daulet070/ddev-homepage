@@ -1,4 +1,6 @@
-import Script from 'next/script'
+import axios from 'axios'
+import * as Yup from 'yup'
+import "yup-phone";
 import {
   Container,
   Box,
@@ -8,13 +10,34 @@ import {
   Input,
   Stack,
   SimpleGrid,
-  useColorModeValue
+  useColorModeValue,
+  FormErrorMessage,
+  FormControl
 } from '@chakra-ui/react'
 import { EmailIcon, ViewIcon } from '@chakra-ui/icons'
+
 import { YMaps, Map } from 'react-yandex-maps'
+import { useFormik } from 'formik'
+
 import Section from '../components/Section'
 
 const Contacts = () => {
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: ''
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required('Name required').min(3, 'Short name'),
+      email: Yup.string().required('Email required').email('Invalid email format'),
+      phone: Yup.string().required('Phone required').phone('RU', true, 'Phone is invalid')
+    }),
+    onSubmit: (values, actions) => {
+      axios.post('https://sheet.best/api/sheets/1f3e3f6a-83e8-4fab-9550-a9a8dbddfa30', values)
+      actions.resetForm()
+    }
+  })
   return (
     <Section duration={0.1}>
       <Container maxW="container.md" centerContent overflow="hidden">
@@ -42,20 +65,48 @@ const Contacts = () => {
             </Stack>
           </Box>
           <Box>
-            <Box as='form'  w={'100%'} >
+            <Box as='form'  w={'100%'} onSubmit={formik.handleSubmit} >
               <SimpleGrid columns={1} gridGap={4}>
-                <Box as='label' w={'100%'}>
+                <FormControl id='name' w={'100%'} isInvalid={formik.errors.name && formik.touched.name}>
                   <Text as='span'>Name</Text>
-                  <Input type={'text'} name='name' placeholder='John' />
-                </Box>
-                <Box as='label' w={'100%'}>
+                  <Input 
+                    type='text' 
+                    name='name' 
+                    placeholder='John' 
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur} />
+                  <FormErrorMessage>
+                    {formik.errors.name}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl id='email' w={'100%'} isInvalid={formik.errors.email && formik.touched.email}>
                   <Text as='span'>Email</Text>
-                  <Input type={'email'} name='email' placeholder='examlple@mail.ru' />
-                </Box>
-                <Box as='label' w={'100%'}>
+                  <Input 
+                    type='email'
+                    name='email'
+                    placeholder='examlple@mail.ru'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur} />
+                  <FormErrorMessage>
+                    {formik.errors.email}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl id='phone' w={'100%'} isInvalid={formik.errors.phone && formik.touched.phone}>
                   <Text as='span'>Phone</Text>
-                  <Input type={'tel'} name='phone' placeholder='+7...' />
-                </Box>
+                  <Input
+                    className='chakra-inp'
+                    type='tel' 
+                    name='phone'
+                    placeholder='+7...'
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur} />
+                  <FormErrorMessage>
+                    {formik.errors.phone}
+                  </FormErrorMessage>
+                </FormControl>
                 <Box display={'flex'} justifyContent={'center'}>
                   <Button type='submit' bgColor={'teal'}>Submit</Button>
                 </Box>
@@ -65,12 +116,10 @@ const Contacts = () => {
         </SimpleGrid>
         <YMaps>
           <div>
-            My awesome application with maps!
             <Map width={'600px'} height={'300px'} defaultState={{ center: [43.495311, 43.597522], zoom: 18 }} />
           </div>
         </YMaps>
       </Container>
-      <Script src='custom/js/phoneMask.js' />
     </Section>
   )
 }
