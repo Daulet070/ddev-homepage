@@ -82,7 +82,7 @@ const ContactForm = () => {
             <EmailIcon /> anakhaev_web@vk.com
           </Text>
           <Text>
-            <ViewIcon /> Nalhcik, Russia
+            <ViewIcon /> Nalchik, Russia
           </Text>
         </Stack>
       </Box>
