@@ -9,7 +9,7 @@ import Section from '../../components/Section'
 
 const PostPage = ({ 
     frontmatter: { title, date, cover_image }, 
-    // slug, 
+    slug, 
     content 
 }) => {
     return (
@@ -22,7 +22,7 @@ const PostPage = ({
                     {title}
                 </Heading>
                 <div>Posted on {date}</div>
-                <Image src={cover_image} alt='' />
+                <Image src={cover_image} alt={slug} />
                 <div>
                     <div dangerouslySetInnerHTML={{__html: marked(content)}}></div>
                 </div>

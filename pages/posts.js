@@ -8,6 +8,32 @@ import { useState, useEffect } from 'react'
 import { sortByDate } from '../utils'
 import Pagination from '../components/Pagination'
 
+export const getStaticProps = async () => {
+  const files = fs.readdirSync(path.join('posts'))
+
+  const posts = files.map(filename => {
+    const slug = filename.replace('.md', '')
+
+    const markdownWithMeta = fs.readFileSync(
+      path.join('posts', filename),
+      'utf-8'
+    )
+
+    const { data: frontmatter } = matter(markdownWithMeta)
+
+    return {
+      slug,
+      frontmatter
+    }
+  })
+
+  return {
+    props: {
+      posts: posts.sort(sortByDate)
+    }
+  }
+}
+
 const Posts = ({ posts }) => {
   const [postCards, setPostCards] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -48,32 +74,6 @@ const Posts = ({ posts }) => {
       </Section>
     </Container>
   )
-}
-
-export async function getStaticProps() {
-  const files = fs.readdirSync(path.join('posts'))
-
-  const posts = files.map(filename => {
-    const slug = filename.replace('.md', '')
-
-    const markdownWithMeta = fs.readFileSync(
-      path.join('posts', filename),
-      'utf-8'
-    )
-
-    const { data: frontmatter } = matter(markdownWithMeta)
-
-    return {
-      slug,
-      frontmatter
-    }
-  })
-
-  return {
-    props: {
-      posts: posts.sort(sortByDate)
-    }
-  }
 }
 
 export default Posts

@@ -1,124 +1,26 @@
-import axios from 'axios'
-import * as Yup from 'yup'
-import "yup-phone";
-import {
-  Container,
-  Box,
-  Heading,
-  Text,
-  Button,
-  Input,
-  Stack,
-  SimpleGrid,
-  useColorModeValue,
-  FormErrorMessage,
-  FormControl
-} from '@chakra-ui/react'
-import { EmailIcon, ViewIcon } from '@chakra-ui/icons'
+import { Container} from '@chakra-ui/react'
 
 import { YMaps, Map } from 'react-yandex-maps'
-import { useFormik } from 'formik'
 
+import ContactForm from '../components/ContactForm'
 import Section from '../components/Section'
 
 const Contacts = () => {
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      phone: ''
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required('Name required').min(3, 'Short name'),
-      email: Yup.string().required('Email required').email('Invalid email format'),
-      phone: Yup.string().required('Phone required').phone('RU', true, 'Phone is invalid')
-    }),
-    onSubmit: (values, actions) => {
-      axios.post('https://sheet.best/api/sheets/1f3e3f6a-83e8-4fab-9550-a9a8dbddfa30', values)
-      actions.resetForm()
-    }
-  })
+  
   return (
     <Section duration={0.1}>
       <Container maxW="container.md" centerContent overflow="hidden">
-        <SimpleGrid
-          bg={useColorModeValue('#ffffffed', '#373772ad')}
-          style={{ backdropFilter: 'blur(10px)' }}
-          columns={[1, 2]}
-          p={5}
-          gridGap={4}
-        >
-          <Box w={'100%'}>
-            <Heading mb={5} as='h2'>
-              Contact
-            </Heading>
-            <Stack direction={'column'} spacing={5}>
-              <Text>
-                Fill up the form to contact
-              </Text>
-              <Text>
-                <EmailIcon />  anakhaev_web@vk.com
-              </Text>
-              <Text>
-                <ViewIcon />  Nalhcik, Russia
-              </Text>
-            </Stack>
-          </Box>
-          <Box>
-            <Box as='form'  w={'100%'} onSubmit={formik.handleSubmit} >
-              <SimpleGrid columns={1} gridGap={4}>
-                <FormControl id='name' w={'100%'} isInvalid={formik.errors.name && formik.touched.name}>
-                  <Text as='span'>Name</Text>
-                  <Input 
-                    type='text' 
-                    name='name' 
-                    placeholder='John' 
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur} />
-                  <FormErrorMessage>
-                    {formik.errors.name}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl id='email' w={'100%'} isInvalid={formik.errors.email && formik.touched.email}>
-                  <Text as='span'>Email</Text>
-                  <Input 
-                    type='email'
-                    name='email'
-                    placeholder='examlple@mail.ru'
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur} />
-                  <FormErrorMessage>
-                    {formik.errors.email}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl id='phone' w={'100%'} isInvalid={formik.errors.phone && formik.touched.phone}>
-                  <Text as='span'>Phone</Text>
-                  <Input
-                    className='chakra-inp'
-                    type='tel' 
-                    name='phone'
-                    placeholder='+7...'
-                    value={formik.values.phone}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur} />
-                  <FormErrorMessage>
-                    {formik.errors.phone}
-                  </FormErrorMessage>
-                </FormControl>
-                <Box display={'flex'} justifyContent={'center'}>
-                  <Button type='submit' bgColor={'teal'}>Submit</Button>
-                </Box>
-              </SimpleGrid>
-            </Box>
-          </Box>
-        </SimpleGrid>
+
+        <ContactForm />
+
+        <br />
+        
         <YMaps>
           <div>
             <Map width={'600px'} height={'300px'} defaultState={{ center: [43.495311, 43.597522], zoom: 18 }} />
           </div>
         </YMaps>
+
       </Container>
     </Section>
   )
